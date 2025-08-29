@@ -184,8 +184,7 @@
 
             <div class="space-y-6">
 
-                 <!-- Google Review Card -->
-                <div class="card card-glow fade-in-up" style="animation-delay: 0.2s;">
+                 <div class="card card-glow fade-in-up" style="animation-delay: 0.2s;">
                     <div class="text-center">
                         <i data-lucide="megaphone" class="w-10 h-10 mx-auto text-accent"></i>
                         <h3 class="text-xl font-bold mt-3">עזרו לנו להפיץ את הבשורה</h3>
@@ -197,7 +196,6 @@
                     </div>
                 </div>
 
-                <!-- Tools Card -->
                 <div class="card fade-in-up" style="animation-delay: 0.3s;">
                      <div class="text-center mb-6">
                         <h2 class="text-2xl font-bold text-white">התנסו עם הכלים החכמים שלנו:</h2>
@@ -215,7 +213,6 @@
                     </div>
                 </div>
 
-                <!-- Community & Organizations Grid -->
                 <div class="grid md:grid-cols-2 gap-6">
                     <div class="card card-glow fade-in-up" style="animation-delay: 0.4s;">
                          <a href="https://chat.whatsapp.com/Cph9meQXEWRAyiTDEBgdE8" target="_blank" class="flex flex-col h-full text-center">
@@ -235,7 +232,6 @@
                     </div>
                 </div>
 
-                <!-- Form Card -->
                 <div class="card fade-in-up" style="animation-delay: 0.6s;">
                     <div class="text-center">
                         <i data-lucide="gift" class="w-12 h-12 mx-auto text-primary"></i>
@@ -303,15 +299,13 @@
         </div>
     </div>
 
-    <!-- Modal Container -->
     <div id="tool-modal" class="modal fixed inset-0 bg-black bg-opacity-70 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden opacity-0" onclick="closeModal()">
         <div id="modal-content" class="modal-content bg-[var(--neutral-dark)] border border-white/10 rounded-2xl w-full max-w-4xl relative transform scale-95" onclick="event.stopPropagation()">
              <button id="close-modal-btn" class="absolute top-4 left-4 text-gray-400 hover:text-white" onclick="closeModal()">
                 <i data-lucide="x" class="w-6 h-6"></i>
              </button>
              <div id="modal-body" class="p-6 md:p-10">
-                <!-- Tool content will be injected here -->
-             </div>
+                </div>
         </div>
     </div>
 
@@ -336,7 +330,7 @@
             const btnLoader = document.getElementById('btn-loader');
             const formError = document.getElementById('form-error');
 
-            form.addEventListener('submit', async (e) => {
+            form.addEventListener('submit', (e) => {
                 e.preventDefault();
                 if (!form.checkValidity()) {
                     formError.textContent = 'נא למלא את כל שדות החובה.';
@@ -347,41 +341,36 @@
                 submitBtn.disabled = true;
                 btnText.classList.add('hidden');
                 btnLoader.classList.remove('hidden');
-
+                
+                const googleSheetURL = 'https://script.google.com/macros/s/AKfycbymHm-GJd0TgU4IuacF4NWKJbYUurm42MUHk3BTqbytRTjJeGFzPuTe1Dh1TfCSO7m71g/exec';
                 const formData = new FormData(form);
-                const data = Object.fromEntries(formData.entries());
-                data.timestamp = new Date().toISOString();
                 
-                const googleSheetURL = 'https://script.google.com/macros/s/AKfycbycj4WQ9dc79e1qjcevaiZYQ8kRymrUtClmTucK6aEMnY_Z2Ry0493Sp63h-1_v0kL-/exec';
-                
-                try {
-                    await fetch(googleSheetURL, {
-                        method: 'POST',
-                        mode: 'no-cors', // To prevent CORS errors
-                        body: new URLSearchParams(data)
+                fetch(googleSheetURL, { method: 'POST', body: formData})
+                    .then(response => {
+                        // Even if the response is opaque, we assume success
+                        console.log('Success (assumed)');
+                        const thankYouContent = `
+                            <div class="text-center p-4">
+                                <i data-lucide="party-popper" class="w-16 h-16 mx-auto text-secondary"></i>
+                                <h2 class="text-3xl font-bold mt-4">תודה על הרשמתך!</h2>
+                                <p class="text-gray-300 mt-2 text-lg">הגישה לקורסים החינמיים נשלחה כעת לכתובת המייל שהזנת.</p>
+                                <p class="text-sm text-gray-400 mt-4">(אם המייל לא הגיע, כדאי לבדוק בתיבת הספאם או בתיבת קידומי המכירות)</p>
+                                <button onclick="closeModal()" class="btn btn-primary mt-6">הבנתי, תודה!</button>
+                            </div>
+                        `;
+                        openModal(thankYouContent);
+                        form.reset();
+                    })
+                    .catch(error => {
+                        console.error('Error submitting form:', error);
+                        formError.textContent = 'אירעה שגיאה. נסו שוב.';
+                    })
+                    .finally(() => {
+                        submitBtn.disabled = false;
+                        btnLoader.classList.add('hidden');
+                        btnText.classList.remove('hidden');
+                        btnText.textContent = 'קבלת גישה מיידית לקורסים 🎁';
                     });
-
-                    const thankYouContent = `
-                        <div class="text-center p-4">
-                            <i data-lucide="party-popper" class="w-16 h-16 mx-auto text-secondary"></i>
-                            <h2 class="text-3xl font-bold mt-4">תודה על הרשמתך!</h2>
-                            <p class="text-gray-300 mt-2 text-lg">הגישה לקורסים החינמיים נשלחה כעת לכתובת המייל שהזנת.</p>
-                            <p class="text-sm text-gray-400 mt-4">(אם המייל לא הגיע, כדאי לבדוק בתיבת הספאם או בתיבת קידומי המכירות)</p>
-                            <button onclick="closeModal()" class="btn btn-primary mt-6">הבנתי, תודה!</button>
-                        </div>
-                    `;
-                    openModal(thankYouContent);
-                    form.reset();
-
-                } catch (error) {
-                    console.error('Error submitting form:', error);
-                    formError.textContent = 'אירעה שגיאה. נסו שוב.';
-                } finally {
-                    submitBtn.disabled = false;
-                    btnLoader.classList.add('hidden');
-                    btnText.classList.remove('hidden');
-                    btnText.textContent = 'קבלת גישה מיידית לקורסים 🎁';
-                }
             });
         }
 
@@ -714,4 +703,3 @@
     </script>
 </body>
 </html>
-
