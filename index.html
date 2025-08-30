@@ -289,7 +289,7 @@
                                 </div>
                                 <div class="mr-3 text-sm">
                                     <label for="newsletter" class="font-medium text-gray-300">אשמח לקבל מידע על סדנאות והכשרות AI לארגונים וצוותים.</label>
-                                    <p class="text-gray-400 text-xs mt-1">נציג ייצור קשר רק אם תסמנו אופציה זו.</p>
+                                    
                                 </div>
                             </div>
                         </div>
@@ -378,16 +378,16 @@
                             <i data-lucide="party-popper" class="w-16 h-16 mx-auto text-secondary"></i>
                             <h2 class="text-3xl font-bold mt-4">תודה על הרשמתך!</h2>
                             <p class="text-gray-300 mt-2 text-lg">הגישה לקורסים החינמיים נשלחה כעת לכתובת המייל שהזנת.</p>
-                            <p class="text-gray-400 mt-4">מעבירים אותך לאתר הראשי בעוד מספר שניות...</p>
-                            <button onclick="window.location.href='https://iiai.co.il'" class="btn btn-primary mt-6">מעבר לאתר עכשיו</button>
+                            <p class="text-sm text-gray-400 mt-4">(אם המייל לא הגיע, כדאי לבדוק בתיבת הספאם או בתיבת קידומי המכירות)</p>
                         </div>
                     `;
                     openModal(thankYouContent);
-                    form.reset();
-
+                    // הפניה אוטומטית לאתר הראשי תוך שנייה וחצי
                     setTimeout(() => {
-                        window.location.href = 'https://iiai.co.il';
-                    }, 4000);
+                        closeModal();
+                        window.location.href = 'https://www.iiai.co.il';
+                    }, 1500);
+                    form.reset();
 
                 } catch (error) {
                     console.error('Error submitting form:', error);
@@ -730,4 +730,3 @@
     </script>
 </body>
 </html>
-
