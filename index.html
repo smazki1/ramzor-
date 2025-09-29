@@ -9,7 +9,7 @@
     
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@400;500;700;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@400;700;900&display=swap" rel="stylesheet">
     
     <script src="https://unpkg.com/lucide@0.378.0/dist/umd/lucide.min.js"></script>
 
@@ -18,7 +18,7 @@
             --primary: #00A3FF; /* Bright Blue */
             --secondary: #00D47B; /* Vibrant Green */
             --accent: #DE00FF; /* Magenta */
-            --cta-yellow: #f59e0b; /* Amber 500 */
+            --cta-orange: #fb923c; /* Orange 400 */
             --neutral-dark: #0C021D; /* Very Dark Blue/Black */
             --neutral-light: #F9F9F9; /* Off-white */
             --glow-color: rgba(0, 163, 255, 0.4);
@@ -116,29 +116,20 @@
             box-shadow: 0 0 0 3px var(--glow-color);
         }
         
-        /* NEW ROLE BUTTON STYLES */
         .role-option {
             background-color: rgba(255, 255, 255, 0.05);
             border: 1px solid rgba(255, 255, 255, 0.2);
-            border-radius: 0.75rem;
-            padding: 0.75rem;
-            text-align: center;
-            cursor: pointer;
-            transition: all 0.2s ease;
-            font-weight: 500;
-            color: var(--neutral-light);
-            width: 100%;
+            transition: all 0.2s ease-in-out;
         }
         .role-option:hover {
             background-color: rgba(255, 255, 255, 0.1);
-            border-color: var(--primary);
+            border-color: rgba(255, 255, 255, 0.4);
         }
         .role-option.selected {
             background-color: var(--primary);
-            color: var(--neutral-dark);
             border-color: var(--primary);
+            color: var(--neutral-dark);
             font-weight: 700;
-            box-shadow: 0 0 15px var(--glow-color);
         }
 
         .fade-in-up {
@@ -150,25 +141,35 @@
         .modal { transition: opacity 0.3s ease; }
         .modal-content { transition: transform 0.3s ease; max-height: 90vh; overflow-y: auto; }
 
-        /* Styles for Tools within Modal */
-        .tool-body { font-family: 'Heebo', sans-serif; }
-        .tool-body input[type=range]::-webkit-slider-thumb {
-            -webkit-appearance: none; appearance: none; width: 24px; height: 24px;
-            background: var(--primary); cursor: pointer; border-radius: 50%;
-            border: 4px solid var(--neutral-light); box-shadow: 0 0 5px rgba(0,0,0,0.2);
-            margin-top: -9px;
+        /* Custom styles for better slider thumb in tools */
+        input[type=range]::-webkit-slider-thumb {
+          -webkit-appearance: none; appearance: none;
+          width: 24px; height: 24px;
+          background: var(--primary);
+          cursor: pointer; border-radius: 50%;
+          border: 4px solid var(--neutral-dark);
+          box-shadow: 0 0 5px rgba(0,0,0,0.2);
+          margin-top: -9px;
         }
-        .tool-body input[type=range]::-moz-range-thumb {
-            width: 24px; height: 24px; background: var(--primary); cursor: pointer;
-            border-radius: 50%; border: 4px solid var(--neutral-light);
-            box-shadow: 0 0 5px rgba(0,0,0,0.2);
+        input[type=range]::-moz-range-thumb {
+          width: 24px; height: 24px;
+          background: var(--primary);
+          cursor: pointer; border-radius: 50%;
+          border: 4px solid var(--neutral-dark);
+          box-shadow: 0 0 5px rgba(0,0,0,0.2);
         }
-        .tool-body .result-card { transition: all 0.3s ease-in-out; }
-        .tool-body .quiz-option { transition: all 0.2s ease-in-out; }
-        .tool-body .quiz-option.selected { background-color: var(--primary); color: var(--neutral-dark); border-color: var(--primary); }
-        .tool-body #quiz-container, .tool-body #results-container { transition: opacity 0.5s, transform 0.5s; }
-        .tool-body .hidden-section { opacity: 0; transform: scale(0.95); display: none; }
-        .tool-body .visible-section { opacity: 1; transform: scale(1); display: block; }
+
+        /* Quiz option styles */
+        .quiz-option { transition: all 0.2s ease-in-out; }
+        .quiz-option.selected {
+            background-color: var(--primary);
+            color: var(--neutral-dark);
+            border-color: var(--primary);
+            font-weight: 700;
+        }
+        #quiz-container, #results-container { transition: opacity 0.5s, transform 0.5s; }
+        .hidden-section { opacity: 0; transform: scale(0.95); display: none; }
+        .visible-section { opacity: 1; transform: scale(1); display: block; }
     </style>
 </head>
 <body class="antialiased">
@@ -188,98 +189,83 @@
                     <div class="text-center">
                         <i data-lucide="gift" class="w-12 h-12 mx-auto text-primary"></i>
                         <h2 class="text-2xl font-bold text-white mt-4">קבלו גישה לקורסים המובילים במתנה!</h2>
-                        <p class="text-slate-300 mt-2 mb-6">מלאו את הטופס וקבלו גישה לקורסים בשווי 1,100 ₪ למשתתף אשר תשלח אליכם למייל מיד בסיום הרישום.</p>
+                        <p class="text-slate-300 mt-2 mb-8">מלאו את הטופס ומיד בסיום תקבלו למייל גישה לקורסים בשווי 1,100 ₪.</p>
                     </div>
-                    <form id="lab-form" novalidate class="max-w-xl mx-auto space-y-4">
-                        <div class="grid sm:grid-cols-2 gap-4">
-                            <div>
-                                <label for="fullName" class="block text-sm font-medium text-gray-300 mb-1">שם מלא</label>
-                                <input type="text" id="fullName" name="fullName" class="input-field" required>
+                    <form id="lab-form" novalidate class="max-w-xl mx-auto">
+                         <div class="grid sm:grid-cols-2 gap-4">
+                             <div>
+                                 <label for="fullName" class="block text-sm font-medium text-gray-300 mb-2">שם מלא</label>
+                                 <input type="text" id="fullName" name="fullName" class="input-field" required>
+                             </div>
+                             <div>
+                                 <label for="email" class="block text-sm font-medium text-gray-300 mb-2">אימייל</label>
+                                 <input type="email" id="email" name="email" class="input-field" required>
+                             </div>
+                         </div>
+                         <div class="mt-6">
+                            <label class="block text-sm font-medium text-gray-300 mb-3">מה התפקיד שלך?</label>
+                            <div id="role-options" class="grid grid-cols-2 md:grid-cols-3 gap-3">
+                                <button type="button" class="role-option py-2 px-3 rounded-lg text-sm sm:text-base" data-value="משאבי אנוש / הדרכה">משאבי אנוש / הדרכה</button>
+                                <button type="button" class="role-option py-2 px-3 rounded-lg text-sm sm:text-base" data-value="מנהל/ת בארגון">מנהל/ת בארגון</button>
+                                <button type="button" class="role-option py-2 px-3 rounded-lg text-sm sm:text-base" data-value="עובד/ת בארגון">עובד/ת בארגון</button>
+                                <button type="button" class="role-option py-2 px-3 rounded-lg text-sm sm:text-base" data-value="מנהל/ת צוות">מנהל/ת צוות</button>
+                                <button type="button" class="role-option py-2 px-3 rounded-lg text-sm sm:text-base" data-value="עו'ד / יועץ משפטי">עו"ד / יועץ משפטי</button>
+                                <button type="button" class="role-option py-2 px-3 rounded-lg text-sm sm:text-base" data-value="אחר">אחר</button>
                             </div>
-                            <div>
-                                <label for="email" class="block text-sm font-medium text-gray-300 mb-1">אימייל</label>
-                                <input type="email" id="email" name="email" class="input-field" required>
-                            </div>
-                        </div>
-                        
-                        <!-- NEW ROLE SELECTION UI -->
-                        <div>
-                            <label class="block text-sm font-medium text-gray-300 mb-2">מה התפקיד שלך?</label>
+                            <input type="text" id="role-other-input" placeholder="נא לפרט את התפקיד..." class="input-field mt-3 hidden">
                             <input type="hidden" id="role-hidden" name="role" required>
-                            <div id="role-options" class="grid grid-cols-2 sm:grid-cols-3 gap-2 sm:gap-3">
-                                <button type="button" class="role-option" data-value="משאבי אנוש / הדרכה">משאבי אנוש / הדרכה</button>
-                                <button type="button" class="role-option" data-value="מנהל/ת בארגון">מנהל/ת בארגון</button>
-                                <button type="button" class="role-option" data-value="עובד/ת בארגון">עובד/ת בארגון</button>
-                                <button type="button" class="role-option" data-value="מנהל/ת צוות">מנהל/ת צוות</button>
-                                <button type="button" class="role-option" data-value="עו'ד / יועץ משפטי">עו"ד / יועץ משפטי</button>
-                                <button type="button" class="role-option" data-value="אחר">אחר</button>
-                            </div>
-                            <input type="text" id="role-other-input" class="input-field mt-3 hidden" placeholder="נא לפרט...">
                         </div>
-                        
-                        <!-- Checkboxes -->
-                        <div class="space-y-4 pt-4 border-t border-white/10">
-                            <div class="flex items-start">
-                                <div class="flex items-center h-5">
-                                    <input id="terms" name="terms" type="checkbox" class="h-4 w-4 rounded border-[rgba(255,255,255,0.2)] bg-neutral-dark text-primary focus:ring-primary focus:ring-offset-neutral-dark" required>
-                                </div>
-                                <div class="mr-3 text-sm">
-                                    <label for="terms" class="font-medium text-gray-300">אני מאשר/ת את <a href="https://www.iiai.co.il/privacy" target="_blank" class="text-primary hover:underline">תנאי השימוש ומדיניות הפרטיות</a>. <span class="text-red-400 font-bold">*</span></label>
-                                </div>
-                            </div>
-                             <div class="flex items-start p-4 rounded-lg bg-white/5">
-                                <div class="flex items-center h-5">
-                                    <input id="newsletter" name="newsletter" type="checkbox" class="h-4 w-4 rounded border-[rgba(255,255,255,0.2)] bg-neutral-dark text-primary focus:ring-primary focus:ring-offset-neutral-dark">
-                                </div>
-                                <div class="mr-3 text-sm">
-                                    <label for="newsletter" class="font-medium text-gray-300">אשמח לקבל מידע על סדנאות והכשרות AI לארגונים וצוותים.</label>
-                                </div>
-                            </div>
-                        </div>
-                        
-                        <button type="submit" id="claim-gift-btn" class="btn btn-primary w-full !mt-6 text-lg">
-                           <span id="btn-text">מימוש המתנה</span>
-                           <div id="btn-loader" class="hidden w-5 h-5 border-2 border-neutral-dark border-t-transparent rounded-full animate-spin"></div>
-                        </button>
-                        <p id="form-error" class="text-red-400 text-center text-sm h-4"></p>
+
+                         <div class="mt-6">
+                             <div class="flex items-start">
+                                 <div class="flex items-center h-5"><input id="terms" name="terms" type="checkbox" class="h-4 w-4 rounded border-[rgba(255,255,255,0.2)] bg-neutral-dark text-primary focus:ring-primary focus:ring-offset-neutral-dark" required></div>
+                                 <div class="mr-3 text-sm"><label for="terms" class="font-medium text-gray-300">אני מאשר/ת את <a href="https://www.iiai.co.il/privacy" target="_blank" class="text-primary hover:underline">תנאי השימוש ומדיניות הפרטיות</a>. <span class="text-red-400 font-bold">*</span></label></div>
+                             </div>
+                         </div>
+                         <div class="mt-6 pt-6 border-t border-white/10 bg-white/5 p-4 rounded-lg">
+                              <div class="flex items-start">
+                                 <div class="flex items-center h-5"><input id="newsletter" name="newsletter" type="checkbox" class="h-4 w-4 rounded border-[rgba(255,255,255,0.2)] bg-neutral-dark text-primary focus:ring-primary focus:ring-offset-neutral-dark"></div>
+                                 <div class="mr-3 text-sm"><label for="newsletter" class="font-medium text-gray-300">אשמח לקבל מידע על סדנאות והכשרות AI לארגונים וצוותים.</label></div>
+                              </div>
+                         </div>
+                         
+                         <button type="submit" id="claim-gift-btn" class="btn btn-primary w-full mt-6 text-lg">
+                            <span id="btn-text">מימוש המתנה</span>
+                            <div id="btn-loader" class="hidden w-5 h-5 border-2 border-neutral-dark border-t-transparent rounded-full animate-spin"></div>
+                         </button>
+                         <p id="form-error" class="text-red-400 text-center mt-3 text-sm h-4"></p>
                     </form>
                 </div>
 
                 <!-- Tools Card -->
                 <div class="card fade-in-up" style="animation-delay: 0.3s;">
                      <div class="text-center mb-6">
-                        <h2 class="text-2xl font-bold text-white">התנסו עם הכלים החכמים שלנו:</h2>
-                        <p class="text-gray-300 mt-1">לחצו על אחד הכלים שלנו וגלו איך בינה מלאכותית משנה את כללי המשחק:</p>
-                    </div>
-                    <div class="grid sm:grid-cols-2 gap-4 max-w-lg mx-auto">
-                        <button id="openTimeSaverBtn" class="btn btn-primary text-base sm:text-lg w-full bg-opacity-70">
-                            <i data-lucide="timer"></i>
-                            <span>כמה זמן תחסוך עם AI?</span>
-                        </button>
-                        <button id="openDiagnosisBtn" class="btn btn-primary text-base sm:text-lg w-full bg-opacity-70">
-                            <i data-lucide="clipboard-list"></i>
-                            <span>אבחון מוכנות ל-AI</span>
-                        </button>
-                    </div>
+                         <h2 class="text-2xl font-bold text-white">התנסו עם הכלים החכמים שלנו:</h2>
+                         <p class="text-gray-300 mt-1">לחצו על אחד הכלים שלנו וגלו איך בינה מלאכותית משנה את כללי המשחק:</p>
+                     </div>
+                     <div class="grid sm:grid-cols-2 gap-4 max-w-lg mx-auto">
+                         <button id="openTimeSaverBtn" class="btn btn-primary text-base sm:text-lg w-full bg-opacity-70"><i data-lucide="timer"></i><span>כמה זמן תחסוך עם AI?</span></button>
+                         <button id="openDiagnosisBtn" class="btn btn-primary text-base sm:text-lg w-full bg-opacity-70"><i data-lucide="clipboard-list"></i><span>אבחון מוכנות ל-AI</span></button>
+                     </div>
                 </div>
 
                 <!-- Community & Organizations Grid -->
                 <div class="grid md:grid-cols-2 gap-6">
-                    <div class="card card-glow fade-in-up" style="animation-delay: 0.4s;">
+                    <div class="card card-glow fade-in-up" style="animation-delay: 0.4s; border-color: var(--cta-orange); box-shadow: 0 0 30px rgba(251, 146, 60, 0.3);">
                          <a href="https://chat.whatsapp.com/Cph9meQXEWRAyiTDEBgdE8" target="_blank" class="flex flex-col h-full text-center">
-                             <i data-lucide="message-circle" class="w-10 h-10 mx-auto text-orange-400"></i>
-                            <h3 class="text-xl font-bold mt-3">קהילת ה-VIP שלנו מחכה לכם</h3>
-                            <p class="text-gray-300 mt-2 mb-4 flex-grow">רוצים להיות תמיד צעד לפני כולם? הצטרפו לוואטסאפ וקבלו טיפים, מדריכים מוקלטים, כלים ועדכונים שיחסכו לכם זמן, כסף ואנרגיה.</p>
-                            <span class="font-bold text-orange-400">הצטרפות מהירה</span>
-                        </a>
+                             <i data-lucide="message-circle" class="w-10 h-10 mx-auto text-[var(--cta-orange)]"></i>
+                             <h3 class="text-xl font-bold mt-3">קהילת ה-VIP שלנו מחכה לכם</h3>
+                             <p class="text-gray-300 mt-2 mb-4 flex-grow">רוצים להיות תמיד צעד לפני כולם? הצטרפו לוואטסאפ וקבלו טיפים, מדריכים מוקלטים, כלים ועדכונים.</p>
+                             <span class="font-bold text-[var(--cta-orange)]">הצטרפות מהירה</span>
+                         </a>
                     </div>
                     <div class="card card-glow fade-in-up" style="animation-delay: 0.5s;">
-                        <a id="org-link" href="#" target="_blank" class="flex flex-col h-full text-center">
+                         <a id="org-link" href="#" target="_blank" class="flex flex-col h-full text-center">
                              <i data-lucide="building-2" class="w-10 h-10 mx-auto text-accent"></i>
-                            <h3 class="text-xl font-bold mt-3">חושבים בגדול? הגיע הזמן לארגון שלכם</h3>
-                            <p class="text-gray-300 mt-2 mb-4 flex-grow">סדנת בינה מלאכותית יישומית ומותאמת לארגון שלכם היא הדרך המהירה ביותר להפוך רעיונות למציאות והצלחה!</p>
-                            <span class="font-bold text-accent">לתיאום פגישה אישית ללא עלות</span>
-                        </a>
+                             <h3 class="text-xl font-bold mt-3">חושבים בגדול? הגיע הזמן לארגון שלכם</h3>
+                             <p class="text-gray-300 mt-2 mb-4 flex-grow">סדנת בינה מלאכותית יישומית ומותאמת לארגון שלכם היא הדרך המהירה ביותר להפוך רעיונות למציאות והצלחה!</p>
+                             <span class="font-bold text-accent">לתיאום פגישה אישית ללא עלות</span>
+                         </a>
                     </div>
                 </div>
             </div>
@@ -293,7 +279,7 @@
     <!-- Main Modal Container (for tools, thank you message etc.) -->
     <div id="main-modal" class="modal fixed inset-0 bg-black bg-opacity-70 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden opacity-0">
         <div id="main-modal-content" class="modal-content bg-[var(--neutral-dark)] border border-white/10 rounded-2xl w-full max-w-4xl relative transform scale-95">
-             <button class="absolute top-4 left-4 text-gray-400 hover:text-white z-10" onclick="closeModal('main-modal')">
+             <button id="main-modal-close-btn" class="absolute top-4 left-4 text-gray-400 hover:text-white z-10">
                 <i data-lucide="x" class="w-6 h-6"></i>
              </button>
              <div id="main-modal-body" class="p-6 md:p-10">
@@ -302,91 +288,73 @@
         </div>
     </div>
 
-    <!-- Review Choice Modal -->
-    <div id="review-choice-modal" class="modal fixed inset-0 bg-black bg-opacity-70 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden opacity-0">
-        <div id="review-choice-modal-content" class="modal-content bg-[var(--neutral-dark)] border border-white/10 rounded-2xl w-full max-w-lg relative transform scale-95 text-center p-8">
-            <i data-lucide="star" class="w-12 h-12 mx-auto text-yellow-400"></i>
-            <h2 class="text-2xl font-bold mt-4">איזה כיף שבאתם! המתנה שלכם כמעט מוכנה...</h2>
-            <p class="text-gray-300 mt-2">התמיכה שלכם עוזרת לנו להגיע לעוד אנשים וארגונים. נשמח מאוד אם תוכלו לתת לנו 5 כוכבים בגוגל, נודה לכם מאוד.</p>
-            <div class="mt-6 flex flex-col items-center gap-3">
-                <button id="give-review-btn" class="btn btn-secondary w-full text-lg">
-                    <i data-lucide="thumbs-up"></i>
-                    ברור! אשמח לפרגן בביקורת ולקבל את הקורסים
-                </button>
-                <button id="skip-review-btn" class="btn btn-skip">
-                    לא עכשיו, מעדיף/ה לקבל את הקורסים ישירות
-                </button>
-            </div>
-        </div>
-    </div>
-
     <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
     <script>
         lucide.createIcons();
 
         particlesJS('particles-js', {
-            particles: { number: { value: 40, density: { enable: true, value_area: 800 } }, color: { value: "#00A3FF" }, shape: { type: "circle" }, opacity: { value: .2, random: true }, size: { value: 3, random: true }, line_linked: { enable: true, distance: 150, color: "#FFFFFF", opacity: .1, width: 1 }, move: { enable: true, speed: 2, direction: "none", random: false, straight: false, out_mode: "out", bounce: false } },
-            interactivity: { detect_on: "canvas", events: { onhover: { enable: true, mode: "grab" }, onclick: { enable: false }, resize: true }, modes: { grab: { distance: 140, line_linked: { opacity: .3 } } } },
-            retina_detect: true
+          "particles": { "number": { "value": 40, "density": { "enable": true, "value_area": 800 } }, "color": { "value": "#00A3FF" }, "shape": { "type": "circle" }, "opacity": { "value": 0.2, "random": true }, "size": { "value": 3, "random": true }, "line_linked": { "enable": true, "distance": 150, "color": "#FFFFFF", "opacity": 0.1, "width": 1 }, "move": { "enable": true, "speed": 2, "direction": "none", "random": false, "straight": false, "out_mode": "out", "bounce": false } },
+          "interactivity": { "detect_on": "canvas", "events": { "onhover": { "enable": true, "mode": "grab" }, "onclick": { "enable": false }, "resize": true }, "modes": { "grab": { "distance": 140, "line_linked": { "opacity": 0.3 } } } },
+          "retina_detect": true
         });
 
-        const workshopsLink = 'https://www.iiai.co.il/%D7%A6%D7%A8%D7%95-%D7%A7%D7%A9%D7%A8';
+        const contactLink = 'https://www.iiai.co.il/%D7%A6%D7%A8%D7%95-%D7%A7%D7%A9%D7%A8';
         const googleReviewLink = 'https://g.page/r/CcPlX7Xip8pJEBM/review';
+        document.getElementById('org-link').href = contactLink;
 
-        // --- FORM & MODAL LOGIC ---
+        // --- FORM & BANNER LOGIC ---
         const form = document.getElementById('lab-form');
         const claimGiftBtn = document.getElementById('claim-gift-btn');
         const btnText = document.getElementById('btn-text');
         const btnLoader = document.getElementById('btn-loader');
         const formError = document.getElementById('form-error');
-
-        const giveReviewBtn = document.getElementById('give-review-btn');
-        const skipReviewBtn = document.getElementById('skip-review-btn');
         
-        // NEW: Role Selection Logic
+        // --- Role Selection Logic ---
         const roleOptionsContainer = document.getElementById('role-options');
         const hiddenRoleInput = document.getElementById('role-hidden');
         const otherRoleInput = document.getElementById('role-other-input');
 
-        roleOptionsContainer.addEventListener('click', (e) => {
-            const selectedButton = e.target.closest('.role-option');
-            if (!selectedButton) return;
+        if (roleOptionsContainer) {
+            roleOptionsContainer.addEventListener('click', (e) => {
+                const button = e.target.closest('.role-option');
+                if (!button) return;
 
-            roleOptionsContainer.querySelectorAll('.role-option').forEach(btn => btn.classList.remove('selected'));
-            selectedButton.classList.add('selected');
+                const value = button.dataset.value;
 
-            const selectedValue = selectedButton.dataset.value;
-            
-            if (selectedValue === 'אחר') {
-                otherRoleInput.classList.remove('hidden');
-                otherRoleInput.focus();
-                hiddenRoleInput.value = otherRoleInput.value;
-            } else {
-                otherRoleInput.classList.add('hidden');
-                hiddenRoleInput.value = selectedValue;
-            }
-        });
+                if (value === 'אחר') {
+                    otherRoleInput.classList.remove('hidden');
+                    otherRoleInput.focus();
+                    hiddenRoleInput.value = otherRoleInput.value; 
+                } else {
+                    otherRoleInput.classList.add('hidden');
+                    hiddenRoleInput.value = value;
+                }
 
-        otherRoleInput.addEventListener('input', () => {
-             if (!otherRoleInput.classList.contains('hidden')) {
-                 hiddenRoleInput.value = otherRoleInput.value;
-             }
-        });
+                roleOptionsContainer.querySelectorAll('.role-option').forEach(opt => opt.classList.remove('selected'));
+                button.classList.add('selected');
+                hiddenRoleInput.dispatchEvent(new Event('input'));
+            });
 
+            otherRoleInput.addEventListener('input', () => {
+                if (roleOptionsContainer.querySelector('.role-option[data-value="אחר"].selected')) {
+                    hiddenRoleInput.value = otherRoleInput.value;
+                    hiddenRoleInput.dispatchEvent(new Event('input'));
+                }
+            });
+        }
 
-        claimGiftBtn.addEventListener('click', (e) => {
+        // --- Main Form Submission ---
+        form.addEventListener('submit', (e) => {
             e.preventDefault();
-            formError.textContent = ''; // Clear previous errors
+            formError.textContent = '';
             
-            const selectedRoleButton = roleOptionsContainer.querySelector('.role-option.selected');
-            if (selectedRoleButton && selectedRoleButton.dataset.value === 'אחר' && otherRoleInput.value.trim() === '') {
-                 formError.textContent = 'נא לפרט את התפקיד שלך.';
+            if (!hiddenRoleInput.value) {
+                 formError.textContent = 'נא לבחור תפקיד.';
                  return;
             }
             
             if (!form.checkValidity()) {
                 formError.textContent = 'נא למלא את כל שדות החובה.';
-                // Find first invalid field and report it
                 for (let i = 0; i < form.elements.length; i++) {
                     if (!form.elements[i].checkValidity()) {
                         form.elements[i].reportValidity();
@@ -396,20 +364,9 @@
                 return;
             }
             
-            openModal('review-choice-modal');
-        });
-
-        giveReviewBtn.addEventListener('click', () => {
-            window.open(googleReviewLink, '_blank');
-            closeModal('review-choice-modal');
             handleFormSubmit();
         });
-
-        skipReviewBtn.addEventListener('click', () => {
-            closeModal('review-choice-modal');
-            handleFormSubmit();
-        });
-
+        
         async function handleFormSubmit() {
             claimGiftBtn.disabled = true;
             btnText.classList.add('hidden');
@@ -419,6 +376,8 @@
             const data = Object.fromEntries(formData.entries());
             data.timestamp = new Date().toISOString();
             data.newsletter = document.getElementById('newsletter').checked;
+            
+            if (data.role === '' && otherRoleInput.value === '') data.role = 'אחר (לא צוין)';
             
             const makeWebhookURL = 'https://hook.eu2.make.com/wc0d2fpmrpwapedmr6fia92pytf3woew';
             
@@ -433,20 +392,36 @@
                 const thankYouContent = `
                     <div class="text-center p-4">
                         <i data-lucide="party-popper" class="w-16 h-16 mx-auto text-secondary"></i>
-                        <h2 class="text-3xl font-bold mt-4">תודה רבה על ההרשמה!</h2>
-                        <p class="text-gray-300 mt-2 text-lg">כל הפרטים לקבלת הקורסים במתנה נשלחו אליך למייל.</p>
-                        <p class="text-sm text-gray-400 mt-4">(אם המייל לא הגיע, כדאי לבדוק בתיבת הספאם או בקידומי המכירות)</p>
+                        <h2 class="text-3xl font-bold mt-4">המתנה בדרך אליך!</h2>
+                        <p class="text-gray-300 mt-2 text-lg">שלחנו לך עכשיו למייל את הגישה המלאה לקורסים.</p>
+                        <div class="mt-8 pt-6 border-t border-white/10">
+                            <h3 class="text-xl font-bold text-orange-400">נהנית מהתכנים של הסדנה ?</h3>
+                            <p class="text-gray-300 mt-2">נשמח מאוד אם תוכל/י לפרגן לנו בדירוג 5 כוכבים בגוגל.<br>זה עוזר לנו להמשיך ליצור כלים חינמיים לקהילה.</p>
+                            <div class="mt-6 flex flex-col items-center gap-3">
+                                <button id="final-review-btn" class="btn bg-orange-400 text-neutral-dark hover:bg-orange-300 shadow-lg shadow-orange-500/20 transform hover:scale-105 w-full sm:w-auto">
+                                    <i data-lucide="thumbs-up"></i>
+                                    כן, באהבה! (לדירוג מהיר בגוגל)
+                                </button>
+                                <button id="skip-review-btn" class="btn btn-skip">
+                                   אולי בפעם הבאה
+                                </button>
+                            </div>
+                        </div>
                     </div>`;
-                openModal('main-modal', thankYouContent, () => {
-                    setTimeout(() => {
-                        window.location.href = 'https://www.iiai.co.il';
-                    }, 2500);
-                });
-                form.reset();
-                // Also reset role selection UI
-                roleOptionsContainer.querySelectorAll('.role-option').forEach(btn => btn.classList.remove('selected'));
-                otherRoleInput.classList.add('hidden');
 
+                openModal('main-modal', thankYouContent, () => {
+                    document.getElementById('final-review-btn').addEventListener('click', () => {
+                        window.open(googleReviewLink, '_blank');
+                        closeModal('main-modal');
+                    });
+                    document.getElementById('skip-review-btn').addEventListener('click', () => {
+                        closeModal('main-modal');
+                    });
+                });
+                
+                form.reset();
+                roleOptionsContainer.querySelectorAll('.role-option').forEach(opt => opt.classList.remove('selected'));
+                otherRoleInput.classList.add('hidden');
 
             } catch (error) {
                 console.error('Error submitting form:', error);
@@ -459,6 +434,9 @@
         }
         
         // --- GENERAL MODAL LOGIC ---
+        const mainModal = document.getElementById('main-modal');
+        const mainModalCloseBtn = document.getElementById('main-modal-close-btn');
+
         const openModal = (modalId, content = null, initializer = null) => {
             const modal = document.getElementById(modalId);
             if (!modal) return;
@@ -489,330 +467,97 @@
             
             setTimeout(() => {
                 modal.classList.add('hidden');
-                if (modalId === 'main-modal') {
-                    const modalBody = modal.querySelector('#main-modal-body');
-                    if (modalBody) modalBody.innerHTML = ''; // Clear content only for main modal
-                }
+                 const modalBody = modal.querySelector('#main-modal-body');
+                 if (modalBody) modalBody.innerHTML = '';
             }, 300);
         };
-        
-        // --- TOOLS CONTENT AND LOGIC ---
 
-        // 1. Time Saver Calculator
-        const timeSaverContent = `
-            <div class="tool-body w-full max-w-4xl space-y-8">
-                <div>
-                    <h1 class="text-3xl md:text-4xl font-bold text-center text-primary">גלו כמה זמן AI יכול לחסוך לכם. כל שבוע.</h1>
-                    <p class="text-center text-gray-300 mt-2 text-lg">הזיזו את הסליידרים לפי כמות השעות שאתם משקיעים בכל משימה בשבוע, וראו את הקסם קורה.</p>
-                </div>
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-                    <div class="space-y-6 bg-white/5 p-6 rounded-xl">
-                        <div class="task-slider">
-                            <label for="emails" class="flex justify-between items-center font-bold text-gray-200">
-                                <span>כתיבת מיילים ומענה להודעות</span>
-                                <span id="emails-value" class="text-primary bg-black/20 px-2 py-1 rounded-md">2 שעות</span>
-                            </label>
-                            <input type="range" id="emails" min="0" max="20" value="2" step="0.5" class="w-full h-2 bg-white/10 rounded-lg appearance-none cursor-pointer">
+        if (mainModalCloseBtn) {
+            mainModalCloseBtn.addEventListener('click', () => closeModal('main-modal'));
+        }
+        
+        // --- TOOLS LOGIC ---
+        document.getElementById('openTimeSaverBtn').addEventListener('click', () => {
+            const content = `
+                <div class="tool-body">
+                    <div>
+                        <h1 class="text-3xl md:text-4xl font-bold text-center text-primary">גלו כמה זמן AI יכול לחסוך לכם – בכל שבוע!</h1>
+                        <p class="text-center text-gray-300 mt-2 text-lg">הזיזו את הסליידרים ובדקו כמה שעות יקרות תוכלו להחזיר לעצמכם.</p>
+                    </div>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mt-8">
+                        <div class="space-y-6 bg-gray-700/50 p-6 rounded-xl">
+                            <div class="task-slider"><label for="emails" class="flex justify-between items-center font-bold text-gray-200 text-sm sm:text-base"><span>כתיבת מיילים ומענה</span><span id="emails-value" class="text-primary bg-neutral-dark/50 px-2 py-1 rounded-md text-sm">2 שעות</span></label><input type="range" id="emails" min="0" max="20" value="2" step="0.5" class="w-full h-2 bg-gray-600 rounded-lg appearance-none cursor-pointer"></div>
+                            <div class="task-slider"><label for="content" class="flex justify-between items-center font-bold text-gray-200 text-sm sm:text-base"><span>יצירת תוכן (פוסטים וכו')</span><span id="content-value" class="text-primary bg-neutral-dark/50 px-2 py-1 rounded-md text-sm">3 שעות</span></label><input type="range" id="content" min="0" max="20" value="3" step="0.5" class="w-full h-2 bg-gray-600 rounded-lg appearance-none cursor-pointer"></div>
+                            <div class="task-slider"><label for="summaries" class="flex justify-between items-center font-bold text-gray-200 text-sm sm:text-base"><span>סיכום (פגישות, מסמכים)</span><span id="summaries-value" class="text-primary bg-neutral-dark/50 px-2 py-1 rounded-md text-sm">1.5 שעות</span></label><input type="range" id="summaries" min="0" max="20" value="1.5" step="0.5" class="w-full h-2 bg-gray-600 rounded-lg appearance-none cursor-pointer"></div>
+                            <div class="task-slider"><label for="research" class="flex justify-between items-center font-bold text-gray-200 text-sm sm:text-base"><span>מחקר ואיסוף מידע</span><span id="research-value" class="text-primary bg-neutral-dark/50 px-2 py-1 rounded-md text-sm">4 שעות</span></label><input type="range" id="research" min="0" max="20" value="4" step="0.5" class="w-full h-2 bg-gray-600 rounded-lg appearance-none cursor-pointer"></div>
+                            <div class="task-slider"><label for="presentations" class="flex justify-between items-center font-bold text-gray-200 text-sm sm:text-base"><span>הכנת מצגות</span><span id="presentations-value" class="text-primary bg-neutral-dark/50 px-2 py-1 rounded-md text-sm">1 שעות</span></label><input type="range" id="presentations" min="0" max="20" value="1" step="0.5" class="w-full h-2 bg-gray-600 rounded-lg appearance-none cursor-pointer"></div>
                         </div>
-                        <div class="task-slider">
-                            <label for="content" class="flex justify-between items-center font-bold text-gray-200">
-                                <span>יצירת תוכן (פוסטים, מאמרים, דוחות)</span>
-                                <span id="content-value" class="text-primary bg-black/20 px-2 py-1 rounded-md">3 שעות</span>
-                            </label>
-                            <input type="range" id="content" min="0" max="20" value="3" step="0.5" class="w-full h-2 bg-white/10 rounded-lg appearance-none cursor-pointer">
-                        </div>
-                        <div class="task-slider">
-                            <label for="summaries" class="flex justify-between items-center font-bold text-gray-200">
-                                <span>סיכום פגישות, מסמכים וסרטונים</span>
-                                <span id="summaries-value" class="text-primary bg-black/20 px-2 py-1 rounded-md">1.5 שעות</span>
-                            </label>
-                            <input type="range" id="summaries" min="0" max="20" value="1.5" step="0.5" class="w-full h-2 bg-white/10 rounded-lg appearance-none cursor-pointer">
-                        </div>
-                        <div class="task-slider">
-                            <label for="research" class="flex justify-between items-center font-bold text-gray-200">
-                                <span>מחקר ואיסוף מידע</span>
-                                 <span id="research-value" class="text-primary bg-black/20 px-2 py-1 rounded-md">4 שעות</span>
-                            </label>
-                            <input type="range" id="research" min="0" max="20" value="4" step="0.5" class="w-full h-2 bg-white/10 rounded-lg appearance-none cursor-pointer">
-                        </div>
-                        <div class="task-slider">
-                            <label for="presentations" class="flex justify-between items-center font-bold text-gray-200">
-                                <span>הכנת מצגות</span>
-                                <span id="presentations-value" class="text-primary bg-black/20 px-2 py-1 rounded-md">1 שעות</span>
-                            </label>
-                            <input type="range" id="presentations" min="0" max="20" value="1" step="0.5" class="w-full h-2 bg-white/10 rounded-lg appearance-none cursor-pointer">
+                        <div id="results-container" class="bg-primary/10 p-6 rounded-xl flex flex-col justify-center items-center text-center space-y-4 border-2 border-primary/30">
+                            <h2 class="text-xl font-bold text-primary">הזמן ש-AI יפנה לכם:</h2>
+                            <div id="weekly-savings-card" class="result-card bg-neutral-dark/30 p-4 rounded-lg w-full"><p class="text-lg text-gray-300">חיסכון שבועי</p><p id="weekly-savings" class="text-4xl font-bold text-secondary">0 שעות</p></div>
+                            <div id="monthly-savings-card" class="result-card bg-neutral-dark/30 p-4 rounded-lg w-full"><p class="text-lg text-gray-300">חיסכון חודשי</p><p id="monthly-savings" class="text-3xl font-bold text-yellow-400">0 שעות</p></div>
+                            <div id="yearly-savings-card" class="result-card bg-neutral-dark/30 p-4 rounded-lg w-full"><p class="text-lg text-gray-300">חיסכון שנתי</p><p id="yearly-savings" class="text-5xl font-bold text-orange-400">0 ימים</p></div>
+                            <p id="impact-statement" class="text-base text-primary pt-4 font-bold" style="opacity: 0; transition: opacity 0.5s;"></p>
                         </div>
                     </div>
-                    <div id="results-container" class="bg-primary/10 p-6 rounded-xl flex flex-col justify-center items-center text-center space-y-4 border-2 border-primary/30">
-                        <h2 class="text-2xl font-bold text-primary">הזמן ש-AI יפנה לכם:</h2>
-                        <div id="weekly-savings-card" class="result-card bg-black/20 p-4 rounded-lg w-full">
-                            <p class="text-lg text-gray-300">חיסכון שבועי</p>
-                            <p id="weekly-savings" class="text-4xl font-bold text-secondary">0 שעות</p>
-                        </div>
-                        <div id="monthly-savings-card" class="result-card bg-black/20 p-4 rounded-lg w-full">
-                            <p class="text-lg text-gray-300">חיסכון חודשי</p>
-                            <p id="monthly-savings" class="text-3xl font-bold text-yellow-400">0 שעות</p>
-                        </div>
-                        <div id="yearly-savings-card" class="result-card bg-black/20 p-4 rounded-lg w-full">
-                            <p class="text-lg text-gray-300">חיסכון שנתי</p>
-                            <p id="yearly-savings" class="text-5xl font-bold text-accent">0 ימים</p>
-                        </div>
-                        <p id="impact-statement" class="text-lg text-blue-200 pt-4 font-bold" style="opacity: 0; transition: opacity 0.5s;"></p>
+                    <div id="cta-section" class="text-center pt-8" style="opacity: 0; transform: translateY(20px); transition: all 0.5s;">
+                        <h3 class="text-2xl font-bold">רוצים ללמוד *איך* לחסוך את הזמן הזה בפועל?</h3>
+                        <a href="${contactLink}" target="_blank" class="mt-4 btn btn-secondary">בחרו את מסלול ה-AI שלכם</a>
                     </div>
-                </div>
-                <div id="cta-section" class="text-center pt-6" style="opacity: 0; transform: translateY(20px); transition: all 0.5s;">
-                    <h3 class="text-2xl font-bold">רוצים ללמוד *איך* לחסוך את הזמן הזה בפועל?</h3>
-                    <p class="text-gray-300 mt-2">הצעד הבא שלכם הוא לבחור את המסלול המתאים לכם ביותר להטמעת AI בעבודה.</p>
-                    <a href="${workshopsLink}" target="_blank" class="mt-4 inline-block bg-primary hover:bg-blue-500 text-neutral-dark font-bold py-3 px-8 rounded-lg text-lg shadow-lg transition-transform transform hover:scale-105">
-                        בחרו את מסלול ה-AI שלכם
-                    </a>
-                </div>
-            </div>`;
+                </div>`;
+            openModal('main-modal', content, initializeTimeSaver);
+        });
+
+        document.getElementById('openDiagnosisBtn').addEventListener('click', () => {
+            const content = `
+                <div class="tool-body">
+                    <div><h1 class="text-3xl md:text-4xl font-bold text-center text-primary">בודק AI: איפה הארגון שלך עומד?</h1><p class="text-center text-gray-300 mt-2 text-lg">ענה על 5 שאלות מהירות וגלה את רמת הבשלות שלכם בעולם הבינה המלאכותית.</p></div>
+                    <div class="w-full bg-gray-700 rounded-full h-2.5 my-6"><div id="progress-bar" class="bg-primary h-2.5 rounded-full" style="width: 0%; transition: width 0.5s ease-in-out;"></div></div>
+                    <div id="quiz-container" class="visible-section">
+                        <div id="question-card" class="bg-gray-700/50 p-6 rounded-xl"><h2 id="question-title" class="text-xl md:text-2xl font-bold mb-4 text-gray-100"></h2><div id="options-container" class="space-y-3"></div></div>
+                        <div class="flex justify-between mt-6"><button id="prev-btn" class="btn bg-gray-600 hover:bg-gray-500 text-white font-bold py-2 px-6 disabled:opacity-50 disabled:cursor-not-allowed">אחורה</button><button id="next-btn" class="btn btn-primary font-bold py-2 px-6 disabled:opacity-50 disabled:cursor-not-allowed">הבא</button></div>
+                    </div>
+                    <div id="results-container" class="hidden-section text-center">
+                        <h2 class="text-2xl font-bold text-primary">תוצאות האבחון שלך:</h2>
+                        <div class="my-4 bg-gray-700/50 p-6 rounded-xl"><p class="text-lg text-gray-200">פרופיל ה-AI שלכם:</p><h3 id="result-profile" class="text-4xl font-bold text-secondary my-2"></h3><p id="result-description" class="text-gray-300 max-w-xl mx-auto"></p></div>
+                        <div class="my-4 bg-primary/10 p-6 rounded-xl border-2 border-primary/30"><h4 class="text-xl font-bold text-primary mb-3">הצעדים הבאים המומלצים עבורכם:</h4><ul id="result-recommendations" class="list-disc list-inside text-right space-y-2 text-gray-200"></ul></div>
+                        <div class="mt-8"><h3 class="text-2xl font-bold">רוצים לבנות תוכנית AI מותאמת אישית?</h3><p class="text-gray-300 mt-2">בואו נדבר. קבעו פגישת ייעוץ אסטרטגית (ללא עלות) ונתחיל להטיס את הארגון שלכם קדימה.</p><a href="${contactLink}" target="_blank" class="mt-4 btn btn-secondary">קבעו פגישת ייעוץ</a></div>
+                    </div>
+                </div>`;
+            openModal('main-modal', content, initializeQuiz);
+        });
 
         const initializeTimeSaver = () => {
-            const SAVINGS_FACTORS = { emails: 0.40, content: 0.50, summaries: 0.75, research: 0.35, presentations: 0.60 };
-            const TASKS = Object.keys(SAVINGS_FACTORS);
-            const sliders = TASKS.map(task => document.getElementById(task));
-            const valueSpans = TASKS.map(task => document.getElementById(`${task}-value`));
-            const weeklySavingsEl = document.getElementById('weekly-savings');
-            const monthlySavingsEl = document.getElementById('monthly-savings');
-            const yearlySavingsEl = document.getElementById('yearly-savings');
-            const impactStatementEl = document.getElementById('impact-statement');
-            const ctaSection = document.getElementById('cta-section');
-
-            function updateValueSpan(index) {
-                if (sliders[index] && valueSpans[index]) {
-                    const value = parseFloat(sliders[index].value).toFixed(1);
-                    valueSpans[index].textContent = `${value} שעות`;
-                }
-            }
-            
-            function animateValue(element, start, end, duration) {
-                if (!element) return;
-                let startTimestamp = null;
-                const step = (timestamp) => {
-                    if (!startTimestamp) startTimestamp = timestamp;
-                    const progress = Math.min((timestamp - startTimestamp) / duration, 1);
-                    const currentVal = start + progress * (end - start);
-                    
-                    if (element.id === 'yearly-savings') {
-                         element.textContent = `${currentVal.toFixed(1)} ימים`;
-                    } else {
-                         element.textContent = `${currentVal.toFixed(1)} שעות`;
-                    }
-                    if (progress < 1) {
-                        window.requestAnimationFrame(step);
-                    }
-                };
-                window.requestAnimationFrame(step);
-            }
-
-            function calculateSavings() {
-                let totalSavedHours = 0;
-                TASKS.forEach(task => {
-                    const slider = document.getElementById(task);
-                    if (slider) {
-                        const hoursSpent = parseFloat(slider.value);
-                        totalSavedHours += hoursSpent * SAVINGS_FACTORS[task];
-                    }
-                });
-                const monthlySavedHours = totalSavedHours * 4.33;
-                const yearlySavedDays = (totalSavedHours * 52) / 8;
-                const currentWeekly = parseFloat(weeklySavingsEl.textContent) || 0;
-                const currentMonthly = parseFloat(monthlySavingsEl.textContent) || 0;
-                const currentYearly = parseFloat(yearlySavingsEl.textContent) || 0;
-                animateValue(weeklySavingsEl, currentWeekly, totalSavedHours, 300);
-                animateValue(monthlySavingsEl, currentMonthly, monthlySavedHours, 300);
-                animateValue(yearlySavingsEl, currentYearly, yearlySavedDays, 300);
-
-                if (totalSavedHours > 1) {
-                    impactStatementEl.textContent = `דמיינו מה הייתם עושים עם עוד ${yearlySavedDays.toFixed(0)} ימים פנויים בשנה...`;
-                    impactStatementEl.style.opacity = '1';
-                    ctaSection.style.opacity = '1';
-                    ctaSection.style.transform = 'translateY(0)';
-                } else {
-                    impactStatementEl.style.opacity = '0';
-                    ctaSection.style.opacity = '0';
-                    ctaSection.style.transform = 'translateY(20px)';
-                }
-            }
-
-            sliders.forEach((slider, index) => {
-                if (slider) {
-                    slider.addEventListener('input', () => {
-                        updateValueSpan(index);
-                        calculateSavings();
-                    });
-                    updateValueSpan(index);
-                }
-            });
-            calculateSavings();
+             const SAVINGS_FACTORS = { emails: 0.40, content: 0.50, summaries: 0.75, research: 0.35, presentations: 0.60 };
+             const TASKS = Object.keys(SAVINGS_FACTORS);
+             const sliders = TASKS.map(task => document.getElementById(task));
+             const valueSpans = TASKS.map(task => document.getElementById(`${task}-value`));
+             const weeklySavingsEl = document.getElementById('weekly-savings');
+             const monthlySavingsEl = document.getElementById('monthly-savings');
+             const yearlySavingsEl = document.getElementById('yearly-savings');
+             const impactStatementEl = document.getElementById('impact-statement');
+             const ctaSection = document.getElementById('cta-section');
+             function updateValueSpan(index) { valueSpans[index].textContent = `${parseFloat(sliders[index].value).toFixed(1)} שעות`; }
+             function animateValue(el, start, end, duration) { let ts = null; const step = (timestamp) => { if (!ts) ts = timestamp; const p = Math.min((timestamp - ts) / duration, 1); const cv = start + p * (end - start); el.textContent = el.id === 'yearly-savings' ? `${cv.toFixed(1)} ימים` : `${cv.toFixed(1)} שעות`; if (p < 1) requestAnimationFrame(step); }; requestAnimationFrame(step); }
+             function calculateSavings() { let total = 0; TASKS.forEach(t => { total += parseFloat(document.getElementById(t).value) * SAVINGS_FACTORS[t]; }); const monthly = total * 4.33; const yearly = (total * 52) / 8; animateValue(weeklySavingsEl, parseFloat(weeklySavingsEl.textContent) || 0, total, 300); animateValue(monthlySavingsEl, parseFloat(monthlySavingsEl.textContent) || 0, monthly, 300); animateValue(yearlySavingsEl, parseFloat(yearlySavingsEl.textContent) || 0, yearly, 300); if (total > 1) { impactStatementEl.textContent = `דמיינו מה הייתם עושים עם עוד ${yearly.toFixed(0)} ימים פנויים בשנה...`; impactStatementEl.style.opacity = '1'; ctaSection.style.opacity = '1'; ctaSection.style.transform = 'translateY(0)'; } else { impactStatementEl.style.opacity = '0'; ctaSection.style.opacity = '0'; ctaSection.style.transform = 'translateY(20px)'; } }
+             sliders.forEach((s, i) => { s.addEventListener('input', () => { updateValueSpan(i); calculateSavings(); }); updateValueSpan(i); });
+             calculateSavings();
         };
-
-        // 2. AI Diagnosis Quiz
-        const quizContent = `
-            <div class="tool-body w-full max-w-3xl space-y-6">
-                 <div>
-                    <h1 class="text-3xl md:text-4xl font-bold text-center text-primary">בודק AI: איפה הארגון שלך עומד?</h1>
-                    <p class="text-center text-gray-300 mt-2 text-lg">ענה על 5 שאלות מהירות וגלה את רמת הבשלות שלכם בעולם הבינה המלאכותית.</p>
-                </div>
-                <div class="w-full bg-white/10 rounded-full h-2.5">
-                    <div id="progress-bar" class="bg-primary h-2.5 rounded-full" style="width: 0%; transition: width 0.5s ease-in-out;"></div>
-                </div>
-                <div id="quiz-container" class="visible-section">
-                    <div id="question-card" class="bg-white/5 p-6 rounded-xl">
-                        <h2 id="question-title" class="text-xl md:text-2xl font-bold mb-4 text-gray-100"></h2>
-                        <div id="options-container" class="space-y-3"></div>
-                    </div>
-                    <div class="flex justify-between mt-6">
-                        <button id="prev-btn" class="bg-white/10 hover:bg-white/20 text-white font-bold py-2 px-6 rounded-lg transition-transform transform hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed">אחורה</button>
-                        <button id="next-btn" class="bg-primary hover:bg-blue-500 text-neutral-dark font-bold py-2 px-6 rounded-lg transition-transform transform hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed">הבא</button>
-                    </div>
-                </div>
-                <div id="results-container" class="hidden-section text-center">
-                    <h2 class="text-2xl font-bold text-primary">תוצאות האבחון שלך:</h2>
-                    <div class="my-4 bg-white/5 p-6 rounded-xl">
-                        <p class="text-lg text-gray-200">פרופיל ה-AI שלכם:</p>
-                        <h3 id="result-profile" class="text-4xl font-bold text-secondary my-2"></h3>
-                        <p id="result-description" class="text-gray-300 max-w-xl mx-auto"></p>
-                    </div>
-                     <div class="my-4 bg-primary/10 p-6 rounded-xl border-2 border-primary/30">
-                        <h4 class="text-xl font-bold text-primary mb-3">הצעדים הבאים המומלצים עבורכם:</h4>
-                        <ul id="result-recommendations" class="list-disc list-inside text-left space-y-2 text-blue-200"></ul>
-                    </div>
-                     <div class="mt-8">
-                        <h3 class="text-2xl font-bold">רוצים לבנות תוכנית AI מותאמת אישית?</h3>
-                        <p class="text-gray-300 mt-2">בואו נדבר. קבעו פגישת ייעוץ אסטרטגית (ללא עלות) ונתחיל להטיס את הארגון שלכם קדימה.</p>
-                        <a href="${workshopsLink}" target="_blank" class="mt-4 inline-block bg-secondary hover:bg-green-500 text-neutral-dark font-bold py-3 px-8 rounded-lg text-lg shadow-lg transition-transform transform hover:scale-105">
-                            קבעו פגישת ייעוץ
-                        </a>
-                    </div>
-                </div>
-            </div>`;
 
         const initializeQuiz = () => {
-            const quizData = [
-                { question: "איך הצוות שלך מתמודד עם כתיבת מיילים ותקשורת פנימית?", options: [ { text: "הכל ידני, כל אחד והסגנון שלו.", points: 1 }, { text: "משתמשים בתבניות מוכנות מראש (טמפלייטים).", points: 2 }, { text: "פה ושם משתמשים ב-ChatGPT לניסוחים או רעיונות.", points: 3 }, { text: "יש לנו כלי AI שעוזר לנסח, לקצר ולשפר כל מייל באופן קבוע.", points: 4 }] },
-                { question: "מה התהליך ליצירת תוכן שיווקי (פוסטים, מאמרים, מצגות)?", options: [ { text: "סיעור מוחות ארוך וכל התוכן נכתב מאפס.", points: 1 }, { text: "משתמשים במקורות השראה מהרשת ומבצעים התאמות.", points: 2 }, { text: "נעזרים בכלי AI כדי לקבל רעיונות, מבנים או טיוטות ראשוניות.", points: 3 }, { text: "יש לנו מערכת מבוססת AI שמייצרת טיוטות תוכן מותאמות לקהל היעד שלנו.", points: 5 }] },
-                { question: "כיצד אתם מסכמים פגישות ארוכות או מסמכים מורכבים?", options: [ { text: "מישהו רושם פרוטוקול ידני, אם זוכרים.", points: 1 }, { text: "מקליטים את הפגישה וחוזרים להקלטה כשצריך.", points: 2 }, { text: "שולחים את ההקלטה/מסמך לכלי AI לקבלת סיכום ותובנות.", points: 3 }, { text: "יש לנו תהליך אוטומטי שמתמלל, מסכם ומפיק משימות מפגישות.", points: 5 }] },
-                { question: "כאשר צריך לאסוף מידע על מתחרים או על שוק חדש, איך אתם פועלים?", options: [ { text: "חיפושים ידניים בגוגל, שעות של עבודה.", points: 1 }, { text: "משתמשים בכלים כמו Google Alerts ומחפשים בפורומים.", points: 2 }, { text: "מבקשים מכלי AI לבצע מחקר ראשוני ולאסוף מקורות מידע.", points: 3 }, { text: "מפעילים 'סוכני AI' שמנטרים את השוק באופן קבוע ומספקים דוחות אוטומטיים.", points: 4 }] },
-                { question: "האם קיימת בארגון אסטרטגיית AI רשמית?", options: [ { text: "AI? אנחנו עדיין מנסים להבין איך המדפסת החדשה עובדת.", points: 1 }, { text: "מדברים על זה הרבה, אבל אין משהו מסודר.", points: 2 }, { text: "ישנם כמה 'אלופים' שמובילים יוזמות AI נקודתיות בצוותים שלהם.", points: 3 }, { text: "כן, יש תוכנית ברורה, יעדים מדידים והכשרות לכלל העובדים.", points: 5 }] }
-            ];
-            const resultsProfiles = [
-                { minScore: 0, profile: "סקרן AI", description: "אתם בתחילת הדרך. שמעתם על AI, מבינים שיש פה פוטנציאל, אבל עדיין לא בטוחים איך להתחיל ומה זה דורש. זה השלב הכי מרגש!", recommendations: [ "<strong>התנסות אישית:</strong> עודדו כל עובד לפתוח חשבון חינמי ב-ChatGPT או Claude ולהתנסות במשימה יומיומית אחת (למשל, ניסוח מייל).", "<strong>הדרכה בסיסית:</strong> קיימו סדנת מבוא קצרה (אפילו שעה) שמסבירה מה זה GenAI ומה הכלים הבסיסיים יכולים לעשות.", "<strong>זיהוי 'כאבים':</strong> ערכו רשימה של 3-5 משימות שלוקחות הכי הרבה זמן בצוות. אלו המועמדות הראשונות לאוטומציה." ] },
-                { minScore: 11, profile: "מאמץ AI", description: "אתם כבר במשחק! חלק מהעובדים משתמשים בכלים, יש התנסויות מוצלחות, אבל הפעילות עדיין לא שיטתית וחסרה אסטרטגיה כוללת.", recommendations: [ "<strong>הגדרת 'Use Case' מוביל:</strong> בחרו תהליך אחד (למשל, שירות לקוחות) ונסו לשלב בו AI באופן עמוק יותר.", "<strong>בניית ספריית פרומפטים:</strong> צרו מסמך משותף עם פרומפטים מוצלחים למשימות ש חוזרות על עצמן בארגון.", "<strong>מינוי 'אלוף AI':</strong> הגדירו אדם אחד שיהיה אחראי על ריכוז הידע והובלת הנושא בארגון." ] },
-                { minScore: 17, profile: "אשף AI", description: "כל הכבוד! AI הוא כבר חלק מתהליכי העבודה שלכם. אתם מבינים את הערך, משתמשים בכלים באופן קבוע ומחפשים את השלב הבא.", recommendations: [ "<strong>בניית כלים מותאמים (Custom GPTs):</strong> צרו כלי AI פנימי המאומן על המידע שלכם (נהלים, מוצרים וכו').", "<strong>אוטומציה בין כלים:</strong> השתמשו בפלטפורמות כמו Zapier או Make כדי לחבר את כלי ה-AI למערכות הקיימות שלכם (CRM, Slack וכו').", "<strong>מדידת ROI:</strong> התחילו למדוד באופן כמותי את החיסכון בזמן ובעלויות שה-AI מייצר לכם." ] },
-                { minScore: 21, profile: "מוביל AI", description: "אתם בחזית. AI אינו רק כלי, אלא חלק מהאסטרטגיה העסקית שלכם. אתם חושבים על מודלים עסקיים חדשים ומפתחים יתרון תחרותי משמעותי.", recommendations: [ "<strong>פיתוח סוכני AI אוטונומיים:</strong> בנו מערכות שיכולות לבצע תהליכים מורכבים מקצה לקצה באופן עצמאי.", "<strong>שילוב AI במוצר הליבה:</strong> חשבו איך ניתן להטמיע יכולות AI במוצרים או בשירותים שאתם מציעים ללקוחות.", "<strong>יצירת תרבות AI:</strong> בנו תוכנית הכשרה מתמשכת וודאו שכל עובד חדש לומד איך למנף AI בתפקידו." ] }
-            ];
-
-            let currentQuestionIndex = 0;
-            let userAnswers = new Array(quizData.length).fill(null);
-            const questionTitleEl = document.getElementById('question-title');
-            const optionsContainerEl = document.getElementById('options-container');
-            const prevBtn = document.getElementById('prev-btn');
-            const nextBtn = document.getElementById('next-btn');
-            const progressBar = document.getElementById('progress-bar');
-            const quizContainer = document.getElementById('quiz-container');
-            const resultsContainer = document.getElementById('results-container');
-
-            function renderQuestion() {
-                const question = quizData[currentQuestionIndex];
-                questionTitleEl.textContent = question.question;
-                optionsContainerEl.innerHTML = '';
-                question.options.forEach((option, index) => {
-                    const button = document.createElement('button');
-                    button.className = 'quiz-option w-full text-right p-4 border-2 border-white/20 rounded-lg hover:bg-white/10';
-                    button.textContent = option.text;
-                    button.dataset.optionIndex = index;
-                    if (userAnswers[currentQuestionIndex] === index) {
-                        button.classList.add('selected');
-                    }
-                    optionsContainerEl.appendChild(button);
-                });
-                updateNavigation();
-                updateProgressBar();
-            }
-
-            function updateNavigation() {
-                prevBtn.disabled = currentQuestionIndex === 0;
-                nextBtn.textContent = (currentQuestionIndex === quizData.length - 1) ? 'סיים וגלה את התוצאה' : 'הבא';
-                nextBtn.disabled = userAnswers[currentQuestionIndex] === null;
-            }
-
-            function updateProgressBar() {
-                const progress = ((currentQuestionIndex) / quizData.length) * 100;
-                progressBar.style.width = `${progress}%`;
-            }
-
-            function showResults() {
-                const userScore = userAnswers.reduce((total, answerIndex, questionIndex) => {
-                     return total + (answerIndex !== null ? quizData[questionIndex].options[answerIndex].points : 0);
-                }, 0);
-                const resultProfile = [...resultsProfiles].reverse().find(p => userScore >= p.minScore);
-                document.getElementById('result-profile').textContent = resultProfile.profile;
-                document.getElementById('result-description').textContent = resultProfile.description;
-                const recommendationsList = document.getElementById('result-recommendations');
-                recommendationsList.innerHTML = '';
-                resultProfile.recommendations.forEach(rec => {
-                    const li = document.createElement('li');
-                    li.innerHTML = rec;
-                    recommendationsList.appendChild(li);
-                });
-                quizContainer.classList.replace('visible-section', 'hidden-section');
-                setTimeout(() => {
-                    quizContainer.style.display = 'none';
-                    resultsContainer.style.display = 'block';
-                    setTimeout(() => resultsContainer.classList.replace('hidden-section', 'visible-section'), 50);
-                }, 500);
-            }
-
-            optionsContainerEl.addEventListener('click', (e) => {
-                if (e.target.classList.contains('quiz-option')) {
-                    const selectedIndex = parseInt(e.target.dataset.optionIndex);
-                    userAnswers[currentQuestionIndex] = selectedIndex;
-                    document.querySelectorAll('.quiz-option').forEach(btn => btn.classList.remove('selected'));
-                    e.target.classList.add('selected');
-                    updateNavigation();
-                    setTimeout(() => {
-                        if (currentQuestionIndex < quizData.length - 1) {
-                            currentQuestionIndex++;
-                            renderQuestion();
-                        } else {
-                           nextBtn.focus();
-                        }
-                    }, 300);
-                }
-            });
-
-            nextBtn.addEventListener('click', () => {
-                if (currentQuestionIndex < quizData.length - 1) {
-                    currentQuestionIndex++;
-                    renderQuestion();
-                } else {
-                    showResults();
-                }
-            });
-
-            prevBtn.addEventListener('click', () => {
-                if (currentQuestionIndex > 0) {
-                    currentQuestionIndex--;
-                    renderQuestion();
-                }
-            });
-
-            renderQuestion();
+            const quizData=[{question:"איך הצוות שלך מתמודד עם כתיבת מיילים ותקשורת פנימית?",options:[{text:"הכל ידני.",points:0},{text:"משתמשים בתבניות.",points:1},{text:"משתמשים ב-ChatGPT לניסוחים.",points:2},{text:"יש לנו כלי AI שעוזר לנסח.",points:4}]},{question:"מה התהליך ליצירת תוכן שיווקי?",options:[{text:"הכל מאפס.",points:0},{text:"משתמשים במקורות השראה.",points:1},{text:"נעזרים ב-AI לרעיונות.",points:3},{text:"מערכת AI מייצרת טיוטות.",points:5}]},{question:"כיצד אתם מסכמים פגישות?",options:[{text:"פרוטוקול ידני.",points:0},{text:"מקליטים את הפגישה.",points:1},{text:"שולחים ל-AI לסיכום.",points:3},{text:"תהליך אוטומטי מסכם ומפיק משימות.",points:5}]},{question:"איך אתם אוספים מידע על מתחרים?",options:[{text:"חיפושים ידניים בגוגל.",points:0},{text:"משתמשים ב-Google Alerts.",points:1},{text:"מבקשים מ-AI מחקר ראשוני.",points:2},{text:"'סוכני AI' מנטרים את השוק.",points:4}]},{question:"האם קיימת אסטרטגיית AI רשמית?",options:[{text:"לא.",points:0},{text:"מדברים על זה.",points:1},{text:"יש כמה יוזמות נקודתיות.",points:3},{text:"כן, יש תוכנית והכשרות.",points:5}]}];
+            const resultsProfiles=[{minScore:0,profile:"סקרן AI",description:"אתם בתחילת הדרך. שמעתם על AI, מבינים שיש פה פוטנציאל, אבל עדיין לא בטוחים איך להתחיל.",recommendations:["<strong>התנסות אישית:</strong> עודדו עובדים להתנסות בכלים חינמיים כמו ChatGPT.","<strong>הדרכה בסיסית:</strong> קיימו סדנת מבוא קצרה על GenAI.","<strong>זיהוי 'כאבים':</strong> ערכו רשימה של 3-5 משימות שלוקחות הכי הרבה זמן."]}, {minScore:26,profile:"מאמץ AI",description:"אתם כבר במשחק! יש התנסויות מוצלחות, אבל הפעילות עדיין לא שיטתית וחסרה אסטרטגיה כוללת.",recommendations:["<strong>הגדרת 'Use Case' מוביל:</strong> בחרו תהליך אחד ונסו לשלב בו AI לעומק.","<strong>בניית ספריית פרומפטים:</strong> צרו מסמך משותף עם פרומפטים מוצלחים למשימות שכיחות.","<strong>מינוי 'אלוף AI':</strong> הגדירו אדם שיהיה אחראי על ריכוז הידע והובלת הנושא."]}, {minScore:51,profile:"אשף AI",description:"כל הכבוד! AI הוא כבר חלק מתהליכי העבודה שלכם. אתם מבינים את הערך ומחפשים את השלב הבא.",recommendations:["<strong>בניית כלים מותאמים (Custom GPTs):</strong> צרו כלי AI פנימי המאומן על המידע שלכם.","<strong>אוטומציה בין כלים:</strong> חברו את כלי ה-AI למערכות הקיימות שלכם (CRM, Slack וכו').","<strong>מדידת ROI:</strong> התחילו למדוד באופן כמותי את החיסכון שה-AI מייצר."]}, {minScore:81,profile:"מוביל AI",description:"אתם בחזית. AI אינו רק כלי, אלא חלק מהאסטרטגיה העסקית שלכם. אתם מפתחים יתרון תחרותי.",recommendations:["<strong>פיתוח סוכני AI אוטונומיים:</strong> בנו מערכות שיכולות לבצע תהליכים מורכבים באופן עצמאי.","<strong>שילוב AI במוצר הליבה:</strong> חשבו איך להטמיע יכולות AI במוצרים שלכם.","<strong>יצירת תרבות AI:</strong> בנו תוכנית הכשרה מתמשכת לכל עובד."]}];
+            let currentQuestionIndex = 0; let userAnswers = new Array(quizData.length).fill(null);
+            const qTitle = document.getElementById('question-title'), optsContainer = document.getElementById('options-container'), prevBtn = document.getElementById('prev-btn'), nextBtn = document.getElementById('next-btn'), pBar = document.getElementById('progress-bar'), qCont = document.getElementById('quiz-container'), rCont = document.getElementById('results-container');
+            function renderQ() { const q = quizData[currentQuestionIndex]; qTitle.textContent = q.question; optsContainer.innerHTML = ''; q.options.forEach((o, i) => { const btn = document.createElement('button'); btn.className = 'quiz-option w-full text-right p-4 border-2 border-gray-600 rounded-lg hover:bg-gray-600'; btn.textContent = o.text; btn.dataset.optionIndex = i; if (userAnswers[currentQuestionIndex] === i) btn.classList.add('selected'); optsContainer.appendChild(btn); }); updateNav(); pBar.style.width = `${((currentQuestionIndex + 1) / quizData.length) * 100}%`; }
+            function updateNav() { prevBtn.disabled = currentQuestionIndex === 0; nextBtn.textContent = (currentQuestionIndex === quizData.length - 1) ? 'סיים וגלה תוצאה' : 'הבא'; nextBtn.disabled = userAnswers[currentQuestionIndex] === null; }
+            function showResults() { const totalPoints = quizData.reduce((t, q) => t + Math.max(...q.options.map(o => o.points)), 0); const userScore = userAnswers.reduce((t, a, i) => t + (a !== null ? quizData[i].options[a].points : 0), 0); const scorePerc = Math.round((userScore / totalPoints) * 100); const profile = [...resultsProfiles].reverse().find(p => scorePerc >= p.minScore); document.getElementById('result-profile').textContent = `${profile.profile} (${scorePerc}%)`; document.getElementById('result-description').textContent = profile.description; const recList = document.getElementById('result-recommendations'); recList.innerHTML = ''; profile.recommendations.forEach(r => { const li = document.createElement('li'); li.innerHTML = r; recList.appendChild(li); }); qCont.classList.replace('visible-section', 'hidden-section'); setTimeout(() => { qCont.style.display = 'none'; rCont.style.display = 'block'; setTimeout(() => rCont.classList.replace('hidden-section', 'visible-section'), 50); }, 500); }
+            optsContainer.addEventListener('click', (e) => { if (e.target.classList.contains('quiz-option')) { userAnswers[currentQuestionIndex] = parseInt(e.target.dataset.optionIndex); document.querySelectorAll('.quiz-option').forEach(b => b.classList.remove('selected')); e.target.classList.add('selected'); updateNav(); setTimeout(() => { if (currentQuestionIndex < quizData.length - 1) { currentQuestionIndex++; renderQ(); } else { nextBtn.focus(); } }, 300); } });
+            nextBtn.addEventListener('click', () => { if (currentQuestionIndex < quizData.length - 1) { currentQuestionIndex++; renderQ(); } else { showResults(); } });
+            prevBtn.addEventListener('click', () => { if (currentQuestionIndex > 0) { currentQuestionIndex--; renderQ(); } });
+            renderQ();
         };
 
-        document.addEventListener('DOMContentLoaded', () => {
-            document.getElementById('org-link').href = workshopsLink;
-            document.getElementById('openTimeSaverBtn').addEventListener('click', () => {
-                openModal('main-modal', timeSaverContent, initializeTimeSaver);
-            });
-            
-            document.getElementById('openDiagnosisBtn').addEventListener('click', () => {
-                openModal('main-modal', quizContent, initializeQuiz);
-            });
-        });
     </script>
 </body>
 </html>
